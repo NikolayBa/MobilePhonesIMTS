@@ -14,6 +14,7 @@ namespace MobilePhonesIMTS.Data
             : base(options)
         {
         }
+        public DbSet<Article> Articles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
