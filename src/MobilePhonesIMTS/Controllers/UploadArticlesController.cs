@@ -19,7 +19,7 @@ namespace MobilePhonesIMTS.Controllers
         {
             _hostingEnvironment = hostingEnvironment;
         }
-
+        [Authorize]
         public IActionResult Index()
         {
             return View();
@@ -48,7 +48,9 @@ namespace MobilePhonesIMTS.Controllers
             // process uploaded files
             // Don't rely on or trust the FileName property without validation.
 
-            return Ok(new { count = files.Count, size, filePath });
+            //return Ok(new { count = files.Count, size, filePath });
+            ViewData["FilePath"] = filePath;
+            return View("~/Views/UploadArticles/Success.cshtml");
         }
 
     }
