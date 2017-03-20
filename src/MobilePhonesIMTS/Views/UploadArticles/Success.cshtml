@@ -1,11 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Success Page";
 }
-<h1>Upload Files</h1>
-<div class="row">
-    <section>
-        <div> Sucessfully uploaded an article </div>
-        <div> The file is located in : @ViewData["FilePath"]</div>
-    </section>
 
+<div class="content">
+    <div class="wrapper">
+        <div class="upload_choice">
+            <div class="media">
+
+                <h1 style="text-align: center; color: #5CB85C;">Sucessfully uploaded an article!</h1>
+                
+                        <div> <h3 style="text-align: center; color: black;"> The file is located in: </h3> </div>
+                        <div> <p style="text-align: center; margin-bottom: 3em;"> @ViewData["FilePath"] </p></div>
+                    
+            </div>
+        </div>
+    </div>
 </div>

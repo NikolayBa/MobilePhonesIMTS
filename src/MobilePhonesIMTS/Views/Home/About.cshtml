@@ -1,7 +1,27 @@
-﻿@{
-    ViewData["Title"] = "About";
-}
-<h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
+﻿
+<div class="content">
+    @{
+        ViewData["Title"] = "About";
+    }
 
-<p>Use this area to provide additional information.</p>
+    <div class="wrapper">
+        <div class="upload_choice">
+            <div class="media">
+                <h2 style="text-align: center; color: #5CB85C;">@ViewData["Title"]</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="upload_choice">
+            <div class="media">
+                <h4><span class="glyphicon glyphicon glyphicon glyphicon glyphicon-book"></span>   It is a pleasure for us to provide you with the opportunity of uploading your files here - in our little library.</h4>
+                <br /><br />
+                <h4><span class="glyphicon glyphicon glyphicon glyphicon-file"></span>   You can keep your important files in a folder created just for you!</h4>
+                <br /><br />
+                <h4><span class="glyphicon glyphicon glyphicon glyphicon-star"></span>   You are the captain of your destiny, you are in control of your data and files :D</h4>
+
+            </div>
+        </div>
+    </div>
+</div>
