@@ -63,8 +63,38 @@ namespace MobilePhonesIMTS.Controllers
         }
 
         [Authorize]
+        [HttpPost("PostArticlesForm")]
+        public async Task<IActionResult> PostOneArticleForm(IFormFile specificFile)
+        {
+            //long size = files.Sum(f => f.Length);
+
+            var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+            var filePath = uploads;
+
+                if (specificFile.Length > 0)
+                {
+                    using (var fileStream = new FileStream(Path.Combine(uploads, specificFile.FileName), FileMode.Create))
+                    {
+                        await specificFile.CopyToAsync(fileStream);
+
+                        ViewData["FilePath"] = filePath + "\\" + specificFile.FileName;
+                    }
+                }
+           
+
+            // process uploaded files
+            // Don't rely on or trust the FileName property without validation.
+
+            //return Ok(new { count = files.Count, size, filePath });
+
+
+            //create
+            return View("~/Views/UploadArticles/Success.cshtml");
+        }
+
+        [Authorize]
         [HttpPost("PostArticleSave")]
-        public async Task<IActionResult> PostArticleSave(ArticleViewModel model)
+        public async Task<IActionResult> PostArticleSave(ArticleViewModel model, IFormFile specificFile)
         {
             if (ModelState.IsValid)
             {
@@ -80,18 +110,31 @@ namespace MobilePhonesIMTS.Controllers
                 ClaimsPrincipal currentUser = User;
                 articleToAdd.UserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-                if (model.ActualFile.Length > 0)
-                {
-                    using (var fileStream = new FileStream(Path.Combine(uploadsDir, model.ActualFile.FileName), FileMode.Create))
+                //if (fileSelect.Length > 0)
+                //{
+                //    using (var fileStream = new FileStream(Path.Combine(uploadsDir, fileSelect.FileName), FileMode.Create))
+                //    {
+                //        await fileSelect.CopyToAsync(fileStream);
+                //    }
+                //    articleToAdd.SystemPath = uploadsDir;
+                //}
+                //else
+                //{
+                //    articleToAdd.SystemPath = "";
+                //}
+
+
+                    if (specificFile.Length > 0)
                     {
-                        await model.ActualFile.CopyToAsync(fileStream);
+                        using (var fileStream = new FileStream(Path.Combine(uploadsDir, specificFile.FileName), FileMode.Create))
+                        {
+                            await specificFile.CopyToAsync(fileStream);
+                            
+                            articleToAdd.SystemPath = uploadsDir + specificFile.FileName;
+                            ViewData["FilePath"] = uploadsDir + "\\" + specificFile.FileName;
+                        }
                     }
-                    articleToAdd.SystemPath = uploadsDir;
-                }
-                else
-                {
-                    articleToAdd.SystemPath = "";
-                }
+                
 
                 _context.Add(articleToAdd);
                 await _context.SaveChangesAsync();
