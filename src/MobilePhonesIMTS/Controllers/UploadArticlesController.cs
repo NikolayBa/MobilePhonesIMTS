@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using MobilePhonesIMTS.Models;
+using MobilePhonesIMTS.Data;
+using System.Security.Claims;
 
 namespace MobilePhonesIMTS.Controllers
 {
@@ -14,9 +17,11 @@ namespace MobilePhonesIMTS.Controllers
     {
 
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ApplicationDbContext _context;
 
-        public UploadArticlesController(IHostingEnvironment hostingEnvironment)
+        public UploadArticlesController(ApplicationDbContext context, IHostingEnvironment hostingEnvironment)
         {
+            _context = context;
             _hostingEnvironment = hostingEnvironment;
         }
         [Authorize]
@@ -29,7 +34,7 @@ namespace MobilePhonesIMTS.Controllers
         [HttpPost("UploadFiles")]
         public async Task<IActionResult> PostArticle(List<IFormFile> files)
         {
-            long size = files.Sum(f => f.Length);
+            //long size = files.Sum(f => f.Length);
 
             var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
             var filePath = uploads;
@@ -41,6 +46,8 @@ namespace MobilePhonesIMTS.Controllers
                     using (var fileStream = new FileStream(Path.Combine(uploads, formFile.FileName), FileMode.Create))
                     {
                         await formFile.CopyToAsync(fileStream);
+
+                        ViewData["FilePath"] = filePath +  "\\" + formFile.FileName;
                     }
                 }
             }
@@ -49,7 +56,48 @@ namespace MobilePhonesIMTS.Controllers
             // Don't rely on or trust the FileName property without validation.
 
             //return Ok(new { count = files.Count, size, filePath });
-            ViewData["FilePath"] = filePath;
+            
+
+            //create
+            return View("~/Views/UploadArticles/Success.cshtml");
+        }
+
+        [Authorize]
+        [HttpPost("PostArticleSave")]
+        public async Task<IActionResult> PostArticleSave(ArticleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var uploadsDir = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+
+                var articleToAdd = new Article();
+                articleToAdd.Title = model.Title;
+                articleToAdd.Category = model.Category;
+                articleToAdd.DatePublished = DateTime.Now;
+                articleToAdd.City = model.City;
+                articleToAdd.ArticleAbstract = model.ArticleAbstract;
+
+                ClaimsPrincipal currentUser = User;
+                articleToAdd.UserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                if (model.ActualFile.Length > 0)
+                {
+                    using (var fileStream = new FileStream(Path.Combine(uploadsDir, model.ActualFile.FileName), FileMode.Create))
+                    {
+                        await model.ActualFile.CopyToAsync(fileStream);
+                    }
+                    articleToAdd.SystemPath = uploadsDir;
+                }
+                else
+                {
+                    articleToAdd.SystemPath = "";
+                }
+
+                _context.Add(articleToAdd);
+                await _context.SaveChangesAsync();
+
+            }
+            //create
             return View("~/Views/UploadArticles/Success.cshtml");
         }
 
