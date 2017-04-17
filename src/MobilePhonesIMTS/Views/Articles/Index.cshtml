@@ -1,7 +1,7 @@
 @model IEnumerable<MobilePhonesIMTS.Models.Article>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Browse Articles";
 }
 
 <h2>Index</h2>
@@ -13,7 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ArticleAbstract)
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                Abstract
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Category)
@@ -27,15 +30,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.SystemPath)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ArticleAbstract)
             </td>
@@ -49,12 +52,15 @@
                 @Html.DisplayFor(modelItem => item.DatePublished)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SystemPath)
+                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                <a asp-action="@Context.Request.Host" /uploads/AndroidRevolution.doc"  View Article </a>*@
+                <a asp-controller="uploads" asp-action="@item.SystemPath">  View </a>
+                
+                
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
+                
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>

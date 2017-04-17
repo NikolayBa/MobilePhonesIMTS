@@ -130,7 +130,7 @@ namespace MobilePhonesIMTS.Controllers
                         {
                             await specificFile.CopyToAsync(fileStream);
                             
-                            articleToAdd.SystemPath = uploadsDir + specificFile.FileName;
+                            articleToAdd.SystemPath = specificFile.FileName;
                             ViewData["FilePath"] = uploadsDir + "\\" + specificFile.FileName;
                         }
                     }
