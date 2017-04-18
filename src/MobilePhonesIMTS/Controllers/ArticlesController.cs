@@ -148,7 +148,7 @@ namespace MobilePhonesIMTS.Controllers
                 return NotFound();
             }
 
-            return View("~/Views/Articles/SuccessDelete.cshtml");
+            return View();
         }
 
         // POST: Articles/Delete/5
@@ -157,9 +157,12 @@ namespace MobilePhonesIMTS.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var article = await _context.Articles.SingleOrDefaultAsync(m => m.Id == id);
+            string articleTitle = article.Title;
+            ViewData["ArticleTitle"] = articleTitle;
             _context.Articles.Remove(article);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+
+            return View("~/Views/Articles/SuccessDelete.cshtml");
         }
 
         private bool ArticleExists(int id)
