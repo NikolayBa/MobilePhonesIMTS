@@ -32,13 +32,13 @@
                 @Html.DisplayNameFor(model => model.City)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DatePublished)
+                Date Published
             </th>
 
             @if (SignInManager.IsSignedIn(User))
             {
                 <th>
-                   Browse the File
+                   Full Contents
                 </th>
             }
         </tr>
@@ -67,7 +67,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
             <td>
-                <a asp-controller="uploads" asp-action="@item.SystemPath">  View </a>
+                <a asp-controller="uploads" asp-action="@item.SystemPath"> View </a>
             </td>
 }
 else
