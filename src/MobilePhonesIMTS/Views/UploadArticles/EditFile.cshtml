@@ -4,11 +4,11 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Change the file </h2>
 
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div class="form-horizontal">
-        <h4>Article</h4>
+        <h4>Change the file for     @Model.Title</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
