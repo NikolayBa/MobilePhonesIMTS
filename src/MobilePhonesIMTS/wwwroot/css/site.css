@@ -62,17 +62,18 @@ textarea {
   right: 0;
   z-index: -1;
   display: block;
-  background-image: url("https://static.wixstatic.com/media/922da6_dd9841dda4164a46b7b8ac4b00abefd6~mv2.jpg");
-  
+  background-image: url("http://www.artsfon.com/pic/201505/1920x1080/artsfon.com-68989.jpg");
+   opacity: 0.5; 
+        filter: alpha(opacity=20);
   transform: scale(1.03);
   width: 100%;
   height: 100%;
   background-size: cover;
-  -webkit-filter: blur(5px);
-  -moz-filter: blur(5px);
-  -o-filter: blur(5px);
-  -ms-filter: blur(5px);
-  filter: blur(5px);
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
 }
 
 .content {
@@ -106,10 +107,15 @@ h2 {
 
 .upload_choice {
   margin: 7em auto;
-  border: 1px solid #606060;
-  background-color: #D7D3D0;
+  border: 1px solid #5CB85C;
+  background-color: #606060;
   border-radius: 10px;
-  opacity: 0.9;
+  color: white;  
+  text-align:center;
+}
+
+.upload_article {
+ margin
 }
 
 .media-body {
@@ -127,5 +133,14 @@ h2 {
 }
 
 .CenteredButton {
-margin-left: 7em;
+margin-left: 28%;
+}
+
+.BetterFooter {
+    position:absolute;
+    bottom:0;
+    left:3em;
+    right:0;
+    width:100%;
+    height:100px;
 }
