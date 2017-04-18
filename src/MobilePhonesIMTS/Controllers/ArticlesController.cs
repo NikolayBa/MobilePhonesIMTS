@@ -148,7 +148,7 @@ namespace MobilePhonesIMTS.Controllers
                 return NotFound();
             }
 
-            return View(article);
+            return View("~/Views/Articles/SuccessDelete.cshtml");
         }
 
         // POST: Articles/Delete/5
