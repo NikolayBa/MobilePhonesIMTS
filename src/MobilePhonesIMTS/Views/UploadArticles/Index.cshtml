@@ -4,12 +4,11 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
+<h2>Create and Upload</h2>
 
 <form method="post" enctype="multipart/form-data"
                       asp-controller="UploadArticles" asp-action="PostArticleSave" >
     <div class="form-horizontal">
-        <h4>Article</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -22,7 +21,7 @@
         <div class="form-group">
             <label asp-for="ArticleAbstract" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="ArticleAbstract" class="form-control" />
+                <textarea asp-for="ArticleAbstract" class="form-control" /> </textarea>
                 <span asp-validation-for="ArticleAbstract" class="text-danger" />
             </div>
         </div>
@@ -53,10 +52,6 @@
         </div>
     </div>
 </form>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
