@@ -121,3 +121,11 @@ h2 {
   margin-left: 2em;
   width: 250px;
 }
+
+.CenteredProfile{
+    margin-left: 25%;
+}
+
+.CenteredButton {
+margin-left: 7em;
+}
