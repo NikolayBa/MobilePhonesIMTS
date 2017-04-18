@@ -4,11 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Your Our Own Articles</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -54,6 +51,7 @@
                     @Html.DisplayFor(modelItem => item.DatePublished)
                 </td>
                 <td>
+                    <a asp-controller="uploads" asp-action="@item.SystemPath">  View </a> |
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                     <a asp-controller="UploadArticles" asp-action="EditFile" asp-route-id="@item.Id">Change File</a>
