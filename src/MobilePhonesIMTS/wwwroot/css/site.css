@@ -64,7 +64,7 @@ textarea {
   display: block;
   background-image: url("http://www.artsfon.com/pic/201505/1920x1080/artsfon.com-68989.jpg");
    opacity: 0.5; 
-        filter: alpha(opacity=20);
+  filter: alpha(opacity=20);
   transform: scale(1.03);
   width: 100%;
   height: 100%;
@@ -147,4 +147,13 @@ margin-left: 28%;
 
 .centerButton {
 margin-left: 4em;
+}
+
+.indexButtons{
+    vertical-align: text-bottom;
+}
+
+.warningLogin{
+    text-align:center;
+    color: darkred;
 }
