@@ -193,7 +193,7 @@ namespace MobilePhonesIMTS.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return View("~/Views/UploadArticles/SuccessEdit.cshtml");
             }
             return View(model);
         }
