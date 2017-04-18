@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using MobilePhonesIMTS.Models;
 using MobilePhonesIMTS.Data;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MobilePhonesIMTS.Controllers
 {
@@ -47,7 +49,7 @@ namespace MobilePhonesIMTS.Controllers
                     {
                         await formFile.CopyToAsync(fileStream);
 
-                        ViewData["FilePath"] = filePath +  "\\" + formFile.FileName;
+                        ViewData["FilePath"] = filePath + "\\" + formFile.FileName;
                     }
                 }
             }
@@ -56,7 +58,7 @@ namespace MobilePhonesIMTS.Controllers
             // Don't rely on or trust the FileName property without validation.
 
             //return Ok(new { count = files.Count, size, filePath });
-            
+
 
             //create
             return View("~/Views/UploadArticles/Success.cshtml");
@@ -71,16 +73,16 @@ namespace MobilePhonesIMTS.Controllers
             var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
             var filePath = uploads;
 
-                if (specificFile.Length > 0)
+            if (specificFile.Length > 0)
+            {
+                using (var fileStream = new FileStream(Path.Combine(uploads, specificFile.FileName), FileMode.Create))
                 {
-                    using (var fileStream = new FileStream(Path.Combine(uploads, specificFile.FileName), FileMode.Create))
-                    {
-                        await specificFile.CopyToAsync(fileStream);
+                    await specificFile.CopyToAsync(fileStream);
 
-                        ViewData["FilePath"] = filePath + "\\" + specificFile.FileName;
-                    }
+                    ViewData["FilePath"] = filePath + "\\" + specificFile.FileName;
                 }
-           
+            }
+
 
             // process uploaded files
             // Don't rely on or trust the FileName property without validation.
@@ -110,39 +112,95 @@ namespace MobilePhonesIMTS.Controllers
                 ClaimsPrincipal currentUser = User;
                 articleToAdd.UserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-                //if (fileSelect.Length > 0)
-                //{
-                //    using (var fileStream = new FileStream(Path.Combine(uploadsDir, fileSelect.FileName), FileMode.Create))
-                //    {
-                //        await fileSelect.CopyToAsync(fileStream);
-                //    }
-                //    articleToAdd.SystemPath = uploadsDir;
-                //}
-                //else
-                //{
-                //    articleToAdd.SystemPath = "";
-                //}
+                if (specificFile.Length > 0)
+                {
+                    using (var fileStream = new FileStream(Path.Combine(uploadsDir, specificFile.FileName), FileMode.Create))
+                    {
+                        await specificFile.CopyToAsync(fileStream);
 
+                        articleToAdd.SystemPath = specificFile.FileName;
+                        ViewData["FilePath"] = uploadsDir + "\\" + specificFile.FileName;
+                    }
+                }
+
+                _context.Add(articleToAdd);
+                await _context.SaveChangesAsync();
+            }
+            //create
+            return View("~/Views/UploadArticles/Success.cshtml");
+        }
+
+        public async Task<IActionResult> EditFile(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var article = await _context.Articles.SingleOrDefaultAsync(m => m.Id == id);
+            if (article == null)
+            {
+                return NotFound();
+            }
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", article.UserId);
+            var articleToPass = new ArticleViewModel();
+            articleToPass.Id = article.Id;
+            articleToPass.Title = article.Title;
+            articleToPass.Category = article.Category;
+            articleToPass.City = article.City;
+            articleToPass.ArticleAbstract = article.ArticleAbstract;
+
+            return View(articleToPass);
+        }
+
+        public async Task<IActionResult> Edit(int id, ArticleViewModel model, IFormFile specificFile)
+        {
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var uploadsDir = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+
+                    var articleToUpdate = await _context.Articles.SingleOrDefaultAsync(m => m.Id == id);
 
                     if (specificFile.Length > 0)
                     {
                         using (var fileStream = new FileStream(Path.Combine(uploadsDir, specificFile.FileName), FileMode.Create))
                         {
                             await specificFile.CopyToAsync(fileStream);
-                            
-                            articleToAdd.SystemPath = specificFile.FileName;
+
+                            articleToUpdate.SystemPath = specificFile.FileName;
                             ViewData["FilePath"] = uploadsDir + "\\" + specificFile.FileName;
                         }
                     }
-                
 
-                _context.Add(articleToAdd);
-                await _context.SaveChangesAsync();
-
+                    _context.Update(articleToUpdate);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ArticleExists(model.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index");
             }
-            //create
-            return View("~/Views/UploadArticles/Success.cshtml");
+            return View(model);
         }
 
+        private bool ArticleExists(int id)
+        {
+            return _context.Articles.Any(e => e.Id == id);
+        }
     }
 }

@@ -13,7 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ArticleAbstract)
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                Abstract
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Category)
@@ -25,11 +28,9 @@
                 @Html.DisplayNameFor(model => model.DatePublished)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SystemPath)
+                Actions
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
+
             <th></th>
         </tr>
     </thead>
@@ -37,6 +38,9 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ArticleAbstract)
                 </td>
@@ -50,15 +54,9 @@
                     @Html.DisplayFor(modelItem => item.DatePublished)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SystemPath)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a asp-controller="UploadArticles" asp-action="EditFile" asp-route-id="@item.Id">Change File</a>
                 </td>
             </tr>
         }

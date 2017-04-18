@@ -8,6 +8,11 @@
 
 <h2>Browse Articles</h2>
 
+@if (!SignInManager.IsSignedIn(User))
+{
+    <text>PLEASE LOG IN TO VIEW FULL ARTICLE </text>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -32,9 +37,9 @@
 
             @if (SignInManager.IsSignedIn(User))
             {
-                <td>
+                <th>
                    Browse the File
-                </td>
+                </th>
             }
         </tr>
     </thead>
@@ -67,7 +72,7 @@
 }
 else
 {
-        
+    
 }
         </tr>
 }
