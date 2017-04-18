@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MobilePhonesIMTS.Data;
 using MobilePhonesIMTS.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MobilePhonesIMTS.Controllers
 {
@@ -27,6 +28,7 @@ namespace MobilePhonesIMTS.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        [Authorize]
         public async Task<IActionResult> EditOwn()
         {
             ClaimsPrincipal currentUser = this.User;

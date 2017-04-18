@@ -15,6 +15,9 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
+                Author
+            </th>
+            <th>
                 Abstract
             </th>
             <th>
@@ -42,6 +45,9 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.LastName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.ArticleAbstract)
             </td>
             <td>
@@ -63,7 +69,6 @@ else
 {
         
 }
-
         </tr>
 }
     </tbody>
