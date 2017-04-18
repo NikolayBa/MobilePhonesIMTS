@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MobilePhonesIMTS.Data;
 using MobilePhonesIMTS.Models;
+using System.Security.Claims;
 
 namespace MobilePhonesIMTS.Controllers
 {
@@ -24,6 +25,17 @@ namespace MobilePhonesIMTS.Controllers
         {
             var applicationDbContext = _context.Articles.Include(a => a.User);
             return View(await applicationDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> EditOwn()
+        {
+            ClaimsPrincipal currentUser = this.User;
+            var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var applicationDbContext = _context.Articles.Include(a => a.User);
+            var ownedArticles = applicationDbContext.Where(r => r.UserId == currentUserID);
+
+            return View(await ownedArticles.ToListAsync());
         }
 
         // GET: Articles/Details/5
